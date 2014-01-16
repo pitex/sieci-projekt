@@ -4,6 +4,8 @@ sieci-projekt
 OKREŚLENIE PROBLEMU:
 Tworzymy sieć komputerową o strukturze drzewowej, dla każdej maszyny istnieje z góry określona maksymalna pojemność - ilość maszyn, z którymi może być połączona (zakładamy, że jest to liczba większa od 2). Chcemy zachować najmniejszą możliwą średnicę sieci, tj. chcemy, aby odległość między najbardziej oddalonymi wierzchołkami była jak najmniejsza. Dochodzi nowy komputer, który musimy dodać on-line. Co robimy?
 
+=============
+
 IDEA ROZWIĄZANIA:
 Tworzymy sieć w formie ukorzenionego drzewa (korzeń stanowi pierwsza maszyna). Nowy komputer dołączamy do takiego wierzchołka, który nie osiągnął maksymalnej pojemności i ma najniższą głębokość. Jeśli takich wierzchołków jest więcej, wybieramy ten najbardziej na lewo.
 
@@ -16,10 +18,13 @@ JEDNAK POJAWIA SIĘ PEWIEN PROBLEM: w związku z tym, że sieć budowana jest on
 
 PROPONOWANE ROZWIĄZANIE: nasze drzewo będzie się automatycznie równoważyć po wykonaniu pewnej ilości ruchów. Ilość wykonanych ruchów powinna być asymptotycznie równa złożoności algorytmu równoważenia.
 
+szczegóły
 =============
 
-SZCZEGÓŁY ROZWIĄZANIA
+DODAWANIE NOWEGO KOMPUTERA: na początku informację o 
+
+=============
+
+SZCZEGÓŁY IMPLEMENTACYJNE
 
 WYBRANY JĘZYK: go
-
-DODAWANIE NOWEGO KOMPUTERA:
