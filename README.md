@@ -12,10 +12,14 @@ CO PRZEMAWIA ZA UŻYCIEM WŁAŚNIE TEGO ALGORYTMU DODANIA KOMPUTERA:
 2. Każde drzewo ma liście. Pojemność wierzchołków jest większa od 2, zatem zawsze istnieje wierzchołek, do którego możemy coś dodać.
 3. Zauważmy, że średnica powiększa się, gdy tworzymy nowy poziom w drzewie. Jednak nasze postępowanie prowadzi do tego, by nowy poziom tworzony był tylko w wypadku całkowitego zapełnienia poprzedniego.
 
+JEDNAK POJAWIA SIĘ PEWIEN PROBLEM: w związku z tym, że sieć budowana jest on-line, globalnie rozwiązanie nie jest optymalne -- gdy wierzchołki dochodzą rosnąco po pojemności (co w prawdziwym życiu również się zdarza - nowa maszyna ma spore szanse być lepszą), poziomów może być więcej niż potrzeba (przykład takiej sytuacji mamy, gdy przychodzące wierzchołki mają współczynnik pojemności równy odpowiednio 3, 5, 3, 3, 3. Zbudujemy wtedy drzewo o średnicy 3, podczas gdy możemy ukorzenić je w drugim wierzchołku i ma wówczas średnicę 2).
+
+PROPONOWANE ROZWIĄZANIE: nasze drzewo będzie się automatycznie równoważyć po wykonaniu pewnej ilości ruchów. Ilość wykonanych ruchów powinna być asymptotycznie równa złożoności algorytmu równoważenia.
+
 =============
 
 SZCZEGÓŁY ROZWIĄZANIA
 
 WYBRANY JĘZYK: go
 
-PROTOKOŁY SIECIOWE:
+DODAWANIE NOWEGO KOMPUTERA:
