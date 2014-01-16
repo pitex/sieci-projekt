@@ -4,6 +4,7 @@ sieci-projekt
 OKREŚLENIE PROBLEMU:
 Tworzymy sieć komputerową o strukturze drzewowej, dla każdej maszyny istnieje z góry określona maksymalna pojemność - ilość maszyn, z którymi może być połączona (zakładamy, że jest to liczba większa od 2). Chcemy zachować najmniejszą możliwą średnicę sieci, tj. chcemy, aby odległość między najbardziej oddalonymi wierzchołkami była jak najmniejsza. Dochodzi nowy komputer, który musimy dodać on-line. Co robimy?
 
+propozycja rozwiązania
 =============
 
 IDEA ROZWIĄZANIA:
@@ -18,13 +19,16 @@ JEDNAK POJAWIA SIĘ PEWIEN PROBLEM: w związku z tym, że sieć budowana jest on
 
 PROPONOWANE ROZWIĄZANIE: nasze drzewo będzie się automatycznie równoważyć po wykonaniu pewnej ilości ruchów. Ilość wykonanych ruchów powinna być asymptotycznie równa złożoności algorytmu równoważenia.
 
-szczegóły
+szczegóły rozwiązania
 =============
 
-DODAWANIE NOWEGO KOMPUTERA: na początku informację o 
+DODAWANIE NOWEGO KOMPUTERA: na początku informację o tym, że przychodzi nowy komputer, otrzymuje korzeń. Następnie maszyny postępują według następującego schematu: 
 
+jeśli Twoja maksymalna pojemność nie została osiągnięta, poślij do rodzica informację zwrotną postaci (twoje ID, twoja głębokość w drzewie). W przeciwnym wypadku, poślij zapytanie do każdego dziecka o wynik w jego podrzewie. Otrzymasz k różnych wyników, gdzie k jest liczbą twoich dzieci. Spośród nich wybierz najlepszy, tj. spośród wyników o minimalnej głębokości wybierz ten najbardziej po lewej. Przekaż wynik w informacji zwrotnej dla rodzica.
+
+SAMORÓWNOWAŻENIE SIĘ:
+
+szczegóły implementacji
 =============
-
-SZCZEGÓŁY IMPLEMENTACYJNE
 
 WYBRANY JĘZYK: go
