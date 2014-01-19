@@ -15,6 +15,7 @@ type Server struct {
 	Parent		net.Conn
 	Children	[]net.Conn
 	ChildNumber	int
+	Root		bool
 }
 
 /* only type of message */
@@ -29,17 +30,39 @@ func InfoMsg(msg string) (string) {
 	return result
 }
 
+func BuildChart() {
+	
+}
+
+func HandleNewMachine() {
+	
+}
+
+func RootReaction(msg string) {
+	switch ExtractType(msg) {
+		case "BLD": BuildChart()
+		case "REQ": HandleNewMachine()
+	}
+}
+
+func ReceiveChart() {
+	
+}
+
 //TODO na razie info zwrotne idzie do wszystkich dzieci
 func (s *Server) SIPMessageReaction(msg string) {
 	switch ExtractType(msg) {
 		//case "INF" : 
-		case "BLD" :
+		case "BLD", "REQ" :
 			s.AskChildren(InfoMsg(msg))
+			if s.Root {
+				RootReaction(msg)
+			} else {
+				s.TellParent(msg)
+			}
 		case "TRA" :
 			s.TellParent(InfoMsg(msg))
-		case "REQ" :
-			s.AskChildren(InfoMsg(msg))
-			s.TellParent(msg)
+			ReceiveChart()
 		case "FND" :
 			s.TellParent(InfoMsg(msg))
 			// if { 
