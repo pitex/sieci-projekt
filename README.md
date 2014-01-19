@@ -6,7 +6,7 @@ Tworzymy sieć komputerową o strukturze drzewowej, dla każdej maszyny istnieje
 propozycja rozwiązania
 =============
 
-POCZĄTKOWA IDEA ROZWIĄZANIA:
+IDEA ROZWIĄZANIA:
 Tworzymy sieć w formie ukorzenionego drzewa (korzeń stanowi pierwsza maszyna). Nowy komputer dołączamy do takiego wierzchołka, który nie osiągnął maksymalnej pojemności i ma najniższą głębokość. Jeśli takich wierzchołków jest więcej, wybieramy ten najbardziej na lewo.
 
 CO PRZEMAWIA ZA UŻYCIEM WŁAŚNIE TEGO ALGORYTMU DODANIA KOMPUTERA:
@@ -23,11 +23,9 @@ PROPONOWANA DODATKOWA FUNKCJONALNOŚĆ: tworzenie obrazu naszej sieci na prośb�
 szczegóły rozwiązania
 =============
 
-DODAWANIE NOWEGO KOMPUTERA: informację o tym, że przychodzi nowy komputer, otrzymuje dowolna maszyna w naszej sieci. Następnie każdy wysyła zapytanie o wynik do swojego rodzica, póki nie dojdzie do korzenia. Korzeń, używając wspomnianego wcześniej algorytmu, znajduje wierzchołek, do którego należy podpiąć nową maszynę.  
+DODAWANIE NOWEGO KOMPUTERA: informację o tym, że przychodzi nowy komputer, otrzymuje dowolna maszyna w naszej sieci. Następnie każdy wysyła zapytanie o wynik do swojego rodzica, póki nie dojdzie do korzenia. Korzeń, używając wspomnianego wcześniej algorytmu, znajduje wierzchołek, do którego należy podpiąć nową maszynę. Rozsyła później informację do wszystkich swoich dzieci, które przekazują ją dalej. Wiadomość rozprzestrzenia się w całej sieci.
 
-jeśli Twoja maksymalna pojemność nie została osiągnięta, poślij do rodzica informację zwrotną postaci (twoje ID, twoja głębokość w drzewie). W przeciwnym wypadku, poślij zapytanie do każdego dziecka o wynik w jego podrzewie. Otrzymasz k różnych wyników, gdzie k jest liczbą twoich dzieci. Spośród nich wybierz najlepszy, tj. spośród wyników o minimalnej głębokości wybierz ten najbardziej po lewej. Przekaż wynik w informacji zwrotnej dla rodzica.
-
-TWORZENIE WYKRESU: wierzchołek otrzymuje polecenie "zbuduj wykres". Jeśli jest liściem, wysyła "wykres" zawierający jedynie siebie. W przeciwnym wypadku, wysyła każdemu ze swoich dzieci prośbę o zbudowanie wykresu swojego poddrzewa, a następnie sam tworzy graf, umieszczając siebie jako ojca oraz wykresy dzieci jako swoje poddrzewa. Na tym etapie przesyłany jest jedynie fragment kodu odpowiadający za samą strukturę drzewa. Gdy korzeń zbuduje już swoje drzewo, wysyła je do wszystkich swoich dzieci z prośbą o przekazanie dalej. Na tym etapie każdy komputer posiada już dane potrzebne do utworzenia wykresu, tworzy go więc u siebie.
+TWORZENIE WYKRESU: wierzchołek otrzymuje polecenie "zbuduj wykres". Wysyła wówczas do swojego rodzica tę wiadomość. Gdy wiadomość dochodzi do korzenia, tworzy on skrypt budujący wykres oraz rozsyła go do swoich dzieci z komunikatem mówiącym ZBUDOWAŁEM SKRYPT. Zostaje ona przekazana dalej.
 
 szczegóły implementacji
 =============
@@ -43,11 +41,11 @@ wybrane protokoły
 
 PROTOKÓŁ WARSTWY TRANSPORTOWEJ: tcp. Nie zależy nam na szybkości, natomiast przy tworzeniu sieci bardzo ważne są dla nas bezpieczeństwo oraz dokładność.
 
-PROTOKÓŁ 1 - PRZESYŁANIE INFORMACJI MIĘDZY KOMPUTERAMI (podczas tworzenia sieci, szukania maksimum, modyfikowania sieci, "dogadywanie się" w sprawie przesłania skryptu wykresu): wystarczy bardzo prosty protokół tekstowy. Jedyne informacje, jakie potrzebujemy, to: typ wiadomości, jej treść oraz ewentualna informacja o błędzie. Zauważmy, że jest to wiadomość, która jest bardzo niewielka, nie potrzebujemy zatem w żaden sposób "porcjować" danych. Będzie ona przekazywana w taki sposób, że wysyłamy tę samą wiadomość póki nie otrzymamy informacji zwrotnej - potwierdzenia jej otrzymania.
+PROTOKÓŁ 1 - PRZESYŁANIE INFORMACJI MIĘDZY KOMPUTERAMI (podczas tworzenia sieci, przekazywania informacji o klientach, "dogadywania się" w sprawie przesłania skryptu wykresu): wystarczy bardzo prosty protokół tekstowy. Jedyne informacje, jakie potrzebujemy, to: typ wiadomości, jej treść oraz ewentualna informacja o błędzie. Zauważmy, że jest to wiadomość, która jest bardzo niewielka, nie potrzebujemy zatem w żaden sposób "porcjować" danych. Będzie ona przekazywana w taki sposób, że wysyłamy tę samą wiadomość póki nie otrzymamy informacji zwrotnej - potwierdzenia jej otrzymania.
 
 Protokołowi temu zdecydowaliśmy nadać nazwę Simple Information Protocol - w skrócie SIP.
 
-PROTOKÓŁ 2 - PRZESYŁANIE WYKRESU: plik z wykresem może być duży, musimy zatem przesyłać go w mniejszych pakietach. Możemy użyć protokołu tekstowego i przekazać po prostu kod wykresu w Java Scripcie. Zauważmy, że komputery mogą ustalić między sobą fakt, że zaraz nastąpi tranfser danych za pomocą naszego protokołu. Następnie możemy podzielić przesyłany skrypt na odpowiednio małe fragmenty i przesyłać je do momentu otrzymania informacji zwrotnej na ich temat.
+PROTOKÓŁ 2 - PRZESYŁANIE WYKRESU: plik z wykresem może być duży, musimy zatem przesyłać go w mniejszych pakietach. Możemy użyć protokołu tekstowego i przekazać po prostu kod wykresu w JavaScripcie. Zauważmy, że komputery mogą ustalić między sobą fakt, że zaraz nastąpi tranfser danych za pomocą naszego protokołu. Następnie możemy podzielić przesyłany skrypt na odpowiednio małe fragmenty i przesyłać je do momentu otrzymania informacji zwrotnej na ich temat.
 
 Protokół ten nazwaliśmy Script Transfet Protocol - STP.
 

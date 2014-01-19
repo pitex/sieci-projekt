@@ -23,9 +23,7 @@ func ExtractType(msg string) (string) {
 	return msg[:3]
 }
 
-/*
-	returns feedback message
-*/
+/*	returns feedback message */
 func InfoMsg(msg string) (string) {
 	var result string
 	result = "INF" + msg[3:]
