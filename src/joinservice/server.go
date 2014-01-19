@@ -1,36 +1,36 @@
 package joinservice
 
 import "net"
-import "string"
+import "strings"
 
 type ServerFullError struct {
-	address	string
+	Address	string
 }
 
 func (err *ServerFullError) Error() string {
-	return "Server " + err.address + " is already full!"
+	return "Server " + err.Address + " is already full!"
 }
 
 type Server struct {
-	address		string
-	parent		net.Conn
-	children	[]net.Conn
-	childNumber	int
+	Address		string
+	Parent		net.Conn
+	Children	[]net.Conn
+	ChildNumber	int
 }
 
 func (s *Server) AskChildren(msg string) {
-	for child := range s.children {
-		child.Write(string.Bytes(msg))
+	for child := range s.Children {
+		child.Write(strings.Bytes(msg))
 	}
 }
 
 func (s *Server) TellParent(msg string) {
-	s.parent.Write(string.Bytes(msg))
+	s.Parent.Write(strings.Bytes(msg))
 }
 
 func (s *Server) AddChild(address string) error {
 	if len(children) == childNumber {
-		return ServerFullError(s.address)
+		return ServerFullError(s.Address)
 	}
 
 	conn, err := net.Dial("tcp", address + ":666")
