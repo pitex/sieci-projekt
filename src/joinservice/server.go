@@ -1,13 +1,12 @@
 package joinservice
 
 import "net"
-import "strings"
 
 type ServerFullError struct {
 	Address	string
 }
 
-func (err *ServerFullError) Error() string {
+func (err ServerFullError) Error() string {
 	return "Server " + err.Address + " is already full!"
 }
 
@@ -35,34 +34,38 @@ func (s *Server) SIPMessageReaction(msg string) {
 	switch ExtractType(msg) {
 		//case "INF" : 
 		case "BLD" :
-			AskChildren(InfoMsg(msg))
+			s.AskChildren(InfoMsg(msg))
 		case "TRA" :
-			TellParent(InfoMsg(msg))
+			s.TellParent(InfoMsg(msg))
 		case "REQ" :
-			AskChildren(InfoMsg(msg))
-			TellParent(msg)
+			s.AskChildren(InfoMsg(msg))
+			s.TellParent(msg)
 		case "FND" :
-			TellParent(InfoMsg(msg))
+			s.TellParent(InfoMsg(msg))
 			// if { 
 			// 	AddChild(...)
 			// }
-			AskChildren(msg)
+			s.AskChildren(msg)
 	}
 }
 
 func (s *Server) AskChildren(msg string) {
-	for child := range s.Children {
-		child.Write(strings.Bytes(msg))
+	byteMsg := []byte(msg)
+
+	for _, child := range s.Children {
+		child.Write(byteMsg)
 	}
 }
 
 func (s *Server) TellParent(msg string) {
-	s.Parent.Write(strings.Bytes(msg))
+	byteMsg := []byte(msg)
+
+	s.Parent.Write(byteMsg)
 }
 
 func (s *Server) AddChild(address string) error {
-	if len(children) == childNumber {
-		return ServerFullError(s.Address)
+	if len(s.Children) == s.ChildNumber {
+		return ServerFullError{s.Address}
 	}
 
 	conn, err := net.Dial("tcp", address + ":666")
@@ -71,8 +74,8 @@ func (s *Server) AddChild(address string) error {
 		return err
 	}
 
-	children[childNumber] = conn
-	childNumber++
+	s.Children[s.ChildNumber] = conn
+	s.ChildNumber++
 
 	return nil
 }
