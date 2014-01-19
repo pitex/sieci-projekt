@@ -6,7 +6,7 @@ Tworzymy sieć komputerową o strukturze drzewowej, dla każdej maszyny istnieje
 propozycja rozwiązania
 =============
 
-IDEA ROZWIĄZANIA:
+POCZĄTKOWA IDEA ROZWIĄZANIA:
 Tworzymy sieć w formie ukorzenionego drzewa (korzeń stanowi pierwsza maszyna). Nowy komputer dołączamy do takiego wierzchołka, który nie osiągnął maksymalnej pojemności i ma najniższą głębokość. Jeśli takich wierzchołków jest więcej, wybieramy ten najbardziej na lewo.
 
 CO PRZEMAWIA ZA UŻYCIEM WŁAŚNIE TEGO ALGORYTMU DODANIA KOMPUTERA:
@@ -16,12 +16,14 @@ CO PRZEMAWIA ZA UŻYCIEM WŁAŚNIE TEGO ALGORYTMU DODANIA KOMPUTERA:
 
 Oczywiście, globalnie rozwiązanie to nie jest optymalne, ale my musimy radzić sobie z problemem on-line!
 
-PROPONOWANA DODATKOWA FUNKCJONALNOŚĆ: tworzenie wykresu naszego drzewa. Root w każdej chwili może wysłać request do swoich dzieci, które zbudują wykres (w formie drzewa). Root stworzy obraz tego, jak wygląda sieć i roześle go do swoich dzieci.
+JEDNAKŻE, POJAWIA SIĘ PEWIEN PROBLEM: co będzie, jeśli dostaniemy dwa requesty o dołączenie do sieci na raz? Możemy rozwiązać go w następujący sposób: root będzie znał strukturę drzewa.
+
+PROPONOWANA DODATKOWA FUNKCJONALNOŚĆ: tworzenie obrazu naszej sieci na prośbę (ludzkich) użytkowników sieci. Korzeń, który zna strukturę sieci, tworzy wykres oraz go rozsyła.
 
 szczegóły rozwiązania
 =============
 
-DODAWANIE NOWEGO KOMPUTERA: na początku informację o tym, że przychodzi nowy komputer, otrzymuje korzeń. Następnie maszyny postępują według następującego schematu: 
+DODAWANIE NOWEGO KOMPUTERA: informację o tym, że przychodzi nowy komputer, otrzymuje dowolna maszyna w naszej sieci. Następnie każdy wysyła zapytanie o wynik do swojego rodzica, póki nie dojdzie do korzenia. Korzeń, używając wspomnianego wcześniej algorytmu, znajduje wierzchołek, do którego należy podpiąć nową maszynę.  
 
 jeśli Twoja maksymalna pojemność nie została osiągnięta, poślij do rodzica informację zwrotną postaci (twoje ID, twoja głębokość w drzewie). W przeciwnym wypadku, poślij zapytanie do każdego dziecka o wynik w jego podrzewie. Otrzymasz k różnych wyników, gdzie k jest liczbą twoich dzieci. Spośród nich wybierz najlepszy, tj. spośród wyników o minimalnej głębokości wybierz ten najbardziej po lewej. Przekaż wynik w informacji zwrotnej dla rodzica.
 
