@@ -1,6 +1,7 @@
 package joinservice
 
 import "net"
+import "log"
 
 type ServerFullError struct {
 	Address	string
@@ -16,6 +17,20 @@ type Server struct {
 	Children	[]net.Conn
 	ChildNumber	int
 	Root		bool
+}
+
+func NewServer(ip string, parent string, capacity int, root bool) *Server{
+	var socket net.Conn
+	var err error
+
+	if !root {
+		socket, err = net.Dial("tcp",parent)
+		if err != nil {
+			log.Fatal(err)
+		}
+	}
+
+	return &Server{ip,socket,make([]net.Conn, capacity),0,root}
 }
 
 /* only type of message */
@@ -100,5 +115,9 @@ func (s *Server) AddChild(address string) error {
 	s.Children[s.ChildNumber] = conn
 	s.ChildNumber++
 
+	return nil
+}
+
+func (s *Server) Start() error {
 	return nil
 }
