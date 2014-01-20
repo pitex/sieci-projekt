@@ -1,7 +1,10 @@
 package sip
 
-import "fmt"
-import "../"
+import (
+	"fmt"
+	"../"
+	"net"
+)
 
 //	Message type used in Simple Information Protocol.
 type Message struct {
@@ -14,7 +17,7 @@ type Message struct {
 	//	REQ - 'I received a request of a new machine' sent to parent only
 	//	FND - 'I am sending a message about who should be new machine's parent' sent do child only, data fields: parent, child 
 	Type	string
-	
+
 	//	Additional data for message given as pairs KEY=VALUE separated with commas.
 	Data	string
 	Error	string
@@ -25,6 +28,7 @@ func (msg *Message) ToString() string {
 	return fmt.Sprintf("%s%s%s%s%s", msg.Type, protocols.GetSep(), msg.Data, protocols.GetSep(), msg.Error)
 }
 
+<<<<<<< HEAD
 func GetSep() string {
 	return "|"
 }
@@ -62,4 +66,9 @@ func FNDInterpretation(msg string) (string, string) {
 	}
 
 	return parent, child
+
+//	Performs request msg through socket and returns response.
+func Request(socket net.Conn, msg Message) (Message, error) {
+	//	NOT YET IMPLEMENTED
+	return Message{}, nil
 }
