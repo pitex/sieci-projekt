@@ -27,10 +27,6 @@ func (msg *Message) ToString() string {
 	return fmt.Sprintf("%s%s%s%s%s", msg.Type, protocols.GetSep(), msg.Data, protocols.GetSep(), msg.Error)
 }
 
-func GetSep() string {
-	return "|"
-}
-
 func GetDataSep() string {
 	return ","
 }
