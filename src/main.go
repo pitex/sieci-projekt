@@ -11,14 +11,15 @@ import (
 	"./joinservice"
 )
 
+//	Main function:
+//	First it creates Client and asks for address to connect to.
+//	After receiving address it creates a server and starts it.
 func main() {
 	reader := bufio.NewReader(os.Stdin)
 
 	fmt.Printf("Enter your IP address: ")
 	myip, _ := reader.ReadString('\n')
 	myip = myip[:len(myip)-1]
-
-	
 
 	fmt.Printf("Enter connection limit for this computer: ")
 	temp, _ := reader.ReadString('\n')
@@ -33,8 +34,6 @@ func main() {
 	if capacity < 2 {
 		capacity = 2
 	}
-
-
 
 	fmt.Printf("Is this the first computer in network?: ")
 	ans, _ := reader.ReadString('\n')
