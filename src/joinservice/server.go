@@ -33,37 +33,47 @@ func NewServer(ip string, parent string, capacity int, root bool) *Server{
 	return &Server{ip,socket,make([]net.Conn, capacity-1),0,root}
 }
 
-/* only type of message */
+// Returns type of given message. 
 func ExtractType(msg string) (string) {
 	return msg[:3]
 }
 
-/*	returns feedback message */
+// Returns feedback message.
 func InfoMsg(msg string) (string) {
 	var result string
 	result = "INF" + msg[3:]
 	return result
 }
 
-func BuildChart() {
+// Building chart script.
+func (s *Server) BuildChart() {
 	
 }
 
-func HandleNewMachine() {
+// We receive 'data fragment' of chart script from our parent, we have to handle the data, build our own chart and send it to children.
+func (s *Server) HandleChart() {
 	
 }
 
-func RootReaction(msg string) {
+// ROOT ONLY - We create chart script and send it to children so they can update their charts
+func (s *Server) CreateChart() {
+	
+}
+
+// ROOT ONLY - When we know that there is a new machine pending, we need to find it place in out net and send the information about it to our children
+func (s *Server) HandleNewMachine() {
+	
+}
+
+// We are root and received a message.
+func (s *Server) RootReaction(msg string) {
 	switch ExtractType(msg) {
-		case "BLD": BuildChart()
+		case "BLD": CreateChart()
 		case "REQ": HandleNewMachine()
 	}
 }
 
-func ReceiveChart() {
-	
-}
-
+// Determines how to react for a SIM message depending on its type.
 //TODO na razie info zwrotne idzie do wszystkich dzieci
 func (s *Server) SIPMessageReaction(msg string) {
 	switch ExtractType(msg) {
@@ -71,13 +81,13 @@ func (s *Server) SIPMessageReaction(msg string) {
 		case "BLD", "REQ" :
 			s.AskChildren(InfoMsg(msg))
 			if s.Root {
-				RootReaction(msg)
+				s.RootReaction(msg)
 			} else {
 				s.TellParent(msg)
 			}
 		case "TRA" :
 			s.TellParent(InfoMsg(msg))
-			ReceiveChart()
+			s.HandleChart()
 		case "FND" :
 			s.TellParent(InfoMsg(msg))
 			// if { 
@@ -87,6 +97,7 @@ func (s *Server) SIPMessageReaction(msg string) {
 	}
 }
 
+// Sending msg to all children.
 func (s *Server) AskChildren(msg string) {
 	byteMsg := []byte(msg)
 
@@ -95,12 +106,14 @@ func (s *Server) AskChildren(msg string) {
 	}
 }
 
+// Sending msg to parent.
 func (s *Server) TellParent(msg string) {
 	byteMsg := []byte(msg)
 
 	s.Parent.Write(byteMsg)
 }
 
+// When we receive information that we are to create a connection with new machine, it becomes our child.
 func (s *Server) AddChild(address string) error {
 	if len(s.Children) == s.ChildNumber {
 		return ServerFullError{s.Address}

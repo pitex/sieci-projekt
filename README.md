@@ -50,3 +50,10 @@ PROTOKÓŁ 2 - PRZESYŁANIE WYKRESU: plik z wykresem może być duży, musimy za
 Protokół ten nazwaliśmy Script Transfet Protocol - STP.
 
 Dlaczego zamiast używania SIP oraz STP nie użyjemy jednego protokołu, o formacie jak SIP, skoro równie dobrze można wysyłać podzielony plik za pomocą SIP? Zwróćmy uwagę na to, ile niepotrzebnych informacji zostałoby wówczas przekazane i jak bardzo spowolniłoby to transfer danych!
+
+dowcip
+=============
+
+Czego potrzeba do ukończenia projektu z sieci?
+
+Szczypki kreatywności.
