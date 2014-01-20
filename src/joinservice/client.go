@@ -10,19 +10,24 @@ import (
 )
 
 type Client struct {
+	//	Address of the client computer.
 	Address		string
+	//	Address of a computer in the existing network.
 	KnownIp		string
+	//	How many connections can be handled.
 	Capacity	int
+	//	Is this computer first in the network.
 	IsRoot		bool
 }
 
-func NewClient(myip string, capacity int, ip string, root bool) *Client {
+//	Creates a new Client object with given parameters.
+func NewClient(address string, capacity int, knownIp string, root bool) *Client {
 	log.Println("Creating new client")
 
-	return &Client{myip,ip,capacity,root}
+	return &Client{address,knownIp,capacity,root}
 }
 
-//	Connects client to network
+//	Asks network where to connect to. Returns address of the computer to which client should connect.
 func (c *Client) Connect() (string, error) {
 	log.Printf("Connecting client %s using %s\n", c.Address, c.KnownIp)
 
