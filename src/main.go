@@ -43,14 +43,25 @@ func main() {
 	root := ans == "y" || ans == "yes"
 
 	var ip string
+	var address string
 
 	if !root {
 		fmt.Printf("Enter IP address of a computer in network: ")
 		ip, _ = reader.ReadString('\n')
 		ip = ip[:len(ip)-1]
+
+		cli := joinservice.NewClient(myip,int(capacity),ip,root)
+		address, err = cli.Connect()
+
+		if err != nil {
+			log.Fatal(err)
+		}
 	}
 
-	cli := joinservice.NewClient(myip,int(capacity),ip,root)
+	server := joinservice.NewServer(myip, address, int(capacity), root)
+	err = server.Start()
 
-	cli.Connect()
+	if err != nil {
+		log.Fatal(err)
+	}
 }
