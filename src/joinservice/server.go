@@ -33,18 +33,6 @@ func NewServer(ip string, parent string, capacity int, root bool) *Server{
 	return &Server{ip,socket,make([]net.Conn, capacity-1),0,root}
 }
 
-// Returns type of given message. 
-func ExtractType(msg string) (string) {
-	return msg[:3]
-}
-
-// Returns feedback message.
-func InfoMsg(msg string) (string) {
-	var result string
-	result = "INF" + msg[3:]
-	return result
-}
-
 // Building chart script.
 func (s *Server) BuildChart() {
 	
@@ -90,9 +78,11 @@ func (s *Server) SIPMessageReaction(msg string) {
 			s.HandleChart()
 		case "FND" :
 			s.TellParent(InfoMsg(msg))
-			// if { 
-			// 	AddChild(...)
-			// }
+			pa, ca := FNDInterpretation(msg)
+			if Address == pa { 
+				AddChild(ca)
+				break
+			}
 			s.AskChildren(msg)
 	}
 }
