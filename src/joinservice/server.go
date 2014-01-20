@@ -48,17 +48,11 @@ func (s *Server) CreateChart() {
 	
 }
 
-// ROOT ONLY - When we know that there is a new machine pending, we need to find it place in out net and send the information about it to our children
-func (s *Server) HandleNewMachine() {
+// ROOT ONLY - When we know that there is a new machine pending. 
+// We need to find it place in out net and send the information about it to our children.
+// We also need to create updated chart and send it to children, too.
+func (s *Server) HandleNewMachine(msg string) {
 	
-}
-
-// We are root and received a message.
-func (s *Server) RootReaction(msg string) {
-	switch ExtractType(msg) {
-		case "BLD": CreateChart()
-		case "REQ": HandleNewMachine()
-	}
 }
 
 // Determines how to react for a SIM message depending on its type.
@@ -69,7 +63,7 @@ func (s *Server) SIPMessageReaction(msg string) {
 		case "BLD", "REQ" :
 			s.AskChildren(InfoMsg(msg))
 			if s.Root {
-				s.RootReaction(msg)
+				s.HandleNewMachine(msg)
 			} else {
 				s.TellParent(msg)
 			}

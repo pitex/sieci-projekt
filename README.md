@@ -25,7 +25,9 @@ szczegóły rozwiązania
 
 DODAWANIE NOWEGO KOMPUTERA: informację o tym, że przychodzi nowy komputer, otrzymuje dowolna maszyna w naszej sieci. Następnie każdy wysyła zapytanie o wynik do swojego rodzica, póki nie dojdzie do korzenia. Korzeń, używając wspomnianego wcześniej algorytmu, znajduje wierzchołek, do którego należy podpiąć nową maszynę. Rozsyła później informację do wszystkich swoich dzieci, które przekazują ją dalej. Wiadomość rozprzestrzenia się w całej sieci.
 
-TWORZENIE WYKRESU: wierzchołek otrzymuje polecenie "zbuduj wykres". Wysyła wówczas do swojego rodzica tę wiadomość. Gdy wiadomość dochodzi do korzenia, tworzy on skrypt budujący wykres oraz rozsyła go do swoich dzieci z komunikatem mówiącym ZBUDOWAŁEM SKRYPT. Zostaje ona przekazana dalej.
+PIERWOTNA IDEA NA TWORZENIE WYKRESU: wierzchołek otrzymuje polecenie "zbuduj wykres". Wysyła wówczas do swojego rodzica tę wiadomość. Gdy wiadomość dochodzi do korzenia, tworzy on skrypt budujący wykres oraz rozsyła go do swoich dzieci z komunikatem mówiącym ZBUDOWAŁEM SKRYPT. Zostaje ona przekazana dalej.
+
+Jednakże, dziecko nie wie, czy zmiany w drzewie zaszły, zatem przy częstych prośbach o wykres nasza sieć zostanie zasypana niepotrzebnymi danymi. Zatem nowy wykres będzie tworzony razem z dodaniem nowego wierzchołka i wówczas rozsyłany.
 
 szczegóły implementacji
 =============
