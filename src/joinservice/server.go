@@ -30,7 +30,7 @@ func NewServer(ip string, parent string, capacity int, root bool) *Server{
 		}
 	}
 
-	return &Server{ip,socket,make([]net.Conn, capacity),0,root}
+	return &Server{ip,socket,make([]net.Conn, capacity-1),0,root}
 }
 
 /* only type of message */

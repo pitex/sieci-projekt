@@ -41,7 +41,7 @@ func (c *Client) Connect() (string, error) {
 	log.Println("Creating message")
 	//	Create request
 	request := new(sip.Message)
-	request.Type = "FIND"
+	request.Type = "REQ"
 	request.Data = fmt.Sprintf("IP=%s,CAP=%d", c.Address, c.Capacity)
 
 	byteRequest := []byte(request.ToString())
