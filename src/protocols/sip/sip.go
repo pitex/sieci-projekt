@@ -14,7 +14,8 @@ type Message struct {
 	//	REQ - 'I received a request of a new machine' sent to parent only
 	//	FND - 'I am sending a message about who should be new machine's parent' sent do child only
 	Type	string
-	//	Additional data for message given as pair KEY=VALUE separated with comma.
+	
+	//	Additional data for message given as pairs KEY=VALUE separated with commas.
 	Data	string
 	Error	string
 }
