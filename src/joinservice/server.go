@@ -2,6 +2,7 @@ package joinservice
 
 import "net"
 import "log"
+import "tree"
 
 type ServerFullError struct {
 	Address	string
@@ -33,19 +34,32 @@ func NewServer(ip string, parent string, capacity int, root bool) *Server{
 	return &Server{ip,socket,make([]net.Conn, capacity-1),0,root}
 }
 
-// Building chart script.
-func (s *Server) BuildChart() {
+// We receive the chart script from our parent, we have to handle the data and send it to children.
+func (s *Server) HandleChartTransfer() {
 	
 }
 
-// We receive 'data fragment' of chart script from our parent, we have to handle the data, build our own chart and send it to children.
-func (s *Server) HandleChart() {
+// Data about node in format required by Google Charts.
+func NodeFormatted(node *tree.Node, string parent, string ToolTip) string {
+	return fmt.Sprintf("['%s','%s','%s'],", *node.IP, parent, ToolTip)
+}
+
+// ROOT ONLY - travelling tree and adding nodes' description into our script
+func (s *Server) BuildChart() {
+
+}
+
+// Rewrites input file to output file in APPEND MODE
+func RewriteFile(input string, output string) {
 	
 }
 
 // ROOT ONLY - We create chart script and send it to children so they can update their charts
 func (s *Server) CreateChart() {
-	
+	os.Create("../resources/chart.html")
+	RewriteFile("../resources/chart_beg", "../resources/chart.html")
+	BuildChart()
+	RewriteFile("../resources/chart_end", "../resources/chart.html")
 }
 
 // ROOT ONLY - When we know that there is a new machine pending. 
@@ -58,21 +72,21 @@ func (s *Server) HandleNewMachine(msg string) {
 // Determines how to react for a SIM message depending on its type.
 //TODO na razie info zwrotne idzie do wszystkich dzieci
 func (s *Server) SIPMessageReaction(msg string) {
-	switch ExtractType(msg) {
+	switch sip.ExtractType(msg) {
 		//case "INF" : 
 		case "BLD", "REQ" :
-			s.AskChildren(InfoMsg(msg))
+			s.AskChildren(sip.InfoMsg(msg))
 			if s.Root {
 				s.HandleNewMachine(msg)
 			} else {
 				s.TellParent(msg)
 			}
 		case "TRA" :
-			s.TellParent(InfoMsg(msg))
+			s.TellParent(sip.InfoMsg(msg))
 			s.HandleChart()
 		case "FND" :
-			s.TellParent(InfoMsg(msg))
-			pa, ca := FNDInterpretation(msg)
+			s.TellParent(sip.InfoMsg(msg))
+			pa, ca := sip.FNDInterpretation(msg)
 			if Address == pa { 
 				AddChild(ca)
 				break
