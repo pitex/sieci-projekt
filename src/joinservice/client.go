@@ -6,6 +6,7 @@ import (
 	"strings"
 	"../protocols/sip"
 	"../protocols"
+	"log"
 )
 
 type Client struct {
@@ -16,19 +17,23 @@ type Client struct {
 }
 
 func NewClient(myip string, capacity int, ip string, root bool) *Client {
+	log.Println("Creating new client")
+
 	return &Client{myip,ip,capacity,root}
 }
 
-//	Connects client to networkz
+//	Connects client to network
 func (c *Client) Connect() (string, error) {
+	log.Printf("Connecting client %s using %s\n", c.Address, c.KnownIp)
+
+	log.Printf("Creating socket to %s\n", c.KnownIp)
 	//	Setup connection
 	conn, err := net.Dial("tcp", c.KnownIp) 
 	if err != nil {
 		return "", err
 	}
 
-
-
+	log.Println("Creating message")
 	//	Create request
 	request := new(sip.Message)
 	request.Type = "FIND"
@@ -36,6 +41,7 @@ func (c *Client) Connect() (string, error) {
 
 	byteRequest := []byte(request.ToString())
 
+	log.Printf("Sending message: %s\n", request.ToString())
 	//	Send request
 	_, err = conn.Write(byteRequest)
 
@@ -44,8 +50,7 @@ func (c *Client) Connect() (string, error) {
 		return "", err
 	}
 
-
-
+	log.Println("Waiting for response")
 	//	Get response
 	var respBytes = make([]byte, 1024)
 	n, err := conn.Read(respBytes)
@@ -55,14 +60,15 @@ func (c *Client) Connect() (string, error) {
 		return "", err
 	}
 
+	log.Println("Saving response")
 	//	Save response
 	response := strings.Split(string(respBytes[:n]), protocols.GetSep())
 
-
-
+	log.Printf("Getting data from response: %s\n", response)
 	//	Get received data
 	data := strings.Split(response[1], ",")
 
+	log.Printf("Looking for IP in data: %s\n", data)
 	//	Find server address
 	for _, s := range data {
 		kv := strings.Split(s, "=")
@@ -71,5 +77,6 @@ func (c *Client) Connect() (string, error) {
 		}
 	}
 
+	log.Println("No IP received")
 	return "", nil
 }
