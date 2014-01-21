@@ -23,13 +23,23 @@ type Message struct {
 	Error	string
 }
 
+func (msg *Message) AddData(k, v string) {
+	msg.Data[k] = v
+}
+
+func (msg *Message) RemoveData(k string) {
+	delete(msg.Data, k)
+}
+
 func ParseDataToString(data map[string]string) string {
 	result := ""
 
 	for k, v := range data {
-		result = result + k
-		result = result + "="
-		result = result + v
+		result = result + k + "=" + v + GetDataSep()
+	}
+
+	if len(result) > 0 {
+		result = result[:len(result)-1]
 	}
 
 	return result

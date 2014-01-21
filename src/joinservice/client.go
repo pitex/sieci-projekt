@@ -2,7 +2,6 @@ package joinservice
 
 import (
 	"net"
-	"fmt"
 	"strings"
 	"../protocols/sip"
 	"../protocols"
@@ -46,7 +45,8 @@ func (c *Client) Connect() (string, error) {
 	log.Println("Creating message")
 	request := new(sip.Message)
 	request.Type = "REQ"
-	request.Data = fmt.Sprintf("IP=%s,CAP=%d", c.Address, c.Capacity)
+	request.AddData("IP", c.Address)
+	request.AddData("CAP", string(c.Capacity))
 
 	byteRequest := []byte(request.ToString())
 
@@ -75,7 +75,7 @@ func (c *Client) Connect() (string, error) {
 
 	//	Get received data
 	log.Printf("Getting data from response: %s\n", response)
-	data := strings.Split(response[1], ",")
+	data := strings.Split(response[1], sip.GetDataSep())
 
 	//	Find server address
 	log.Printf("Looking for IP in data: %s\n", data)
