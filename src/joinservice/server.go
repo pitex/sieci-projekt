@@ -88,7 +88,7 @@ func (s *Server) SIPMessageReaction(msg string) {
 			}
 		case "TRA" :
 			s.TellParent(sip.InfoMsg(msg))
-			s.HandleChart()
+			s.HandleChartTransfer()
 		case "FND" :
 			s.TellParent(sip.InfoMsg(msg))
 			pa, ca := sip.FNDInterpretation(msg)
