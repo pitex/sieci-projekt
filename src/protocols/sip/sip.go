@@ -5,6 +5,7 @@ import (
 	"../"
 	"net"
 	"strings"
+	"log"
 )
 
 //	Message type used in Simple Information Protocol.
@@ -23,14 +24,17 @@ type Message struct {
 	Error	string
 }
 
+//	Adds a k=v pair to data.
 func (msg *Message) AddData(k, v string) {
 	msg.Data[k] = v
 }
 
+//	Removes value associated with key k.
 func (msg *Message) RemoveData(k string) {
 	delete(msg.Data, k)
 }
 
+//	Parses key-value map to a string.
 func ParseDataToString(data map[string]string) string {
 	result := ""
 
@@ -50,6 +54,7 @@ func (msg *Message) ToString() string {
 	return fmt.Sprintf("%s%s%s%s%s", msg.Type, protocols.GetSep(), ParseDataToString(msg.Data), protocols.GetSep(), msg.Error)
 }
 
+//	Returns string separating key-value pairs in data.
 func GetDataSep() string {
 	return ","
 }
@@ -92,6 +97,7 @@ func FNDInterpretation(msg string) (string, string) {
 	return parent, child
 }*/
 
+//	Parses data string to key-value map.
 func InterpreteData(data string) map[string]string {
 	sp := strings.Split(data, GetDataSep())
 	var result = make(map[string]string)
@@ -114,7 +120,14 @@ func GetMessage(msg string) (Message){
 }
 
 //	Performs request msg through socket and returns response.
-func Request(socket net.Conn, msg Message) (Message, error) {
-	//	NOT YET IMPLEMENTED
-	return Message{}, nil
+func Request(socket net.Conn, msg Message) (*Message, error) {
+	log.Printf("Sending message: %s\n",msg.ToString())
+
+	_, err := socket.Write([]byte(msg.ToString()))
+
+	if err != nil {
+		return nil, err
+	}
+
+	return nil, nil
 }
