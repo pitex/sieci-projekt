@@ -22,7 +22,9 @@ type Server struct {
 	Parent		net.Conn
 	Children	[]net.Conn
 	ChildNumber	int
-	Root		bool
+
+	// If the server is root, it is pointer to node representing it, otherwise it is nil.
+	Root		*tree.Node
 }
 
 func NewServer(ip string, parent string, capacity int, root bool) *Server{
@@ -36,7 +38,10 @@ func NewServer(ip string, parent string, capacity int, root bool) *Server{
 		}
 	}
 
-	return &Server{ip,socket,make([]net.Conn, capacity-1),0,root}
+	if !root {
+		return &Server{ip, socket, make([]net.Conn, capacity-1), 0, nil}
+	}
+	return  &Server{ip, socket, make([]net.Conn, capacity-1), 0, tree.NewNode(ip, capacity)}
 }
 
 // We receive the chart script from our parent, we have to handle the data and send it to children.
@@ -56,7 +61,20 @@ func (s *Server) BuildChart() {
 
 // Rewrites input file to output file in APPEND MODE
 func RewriteFile(input string, output string) {
-	
+	infile, _ := os.Open(input)
+	outfile, _ := os.OpenFile(output, os.O_APPEND, os.ModeAppend)
+
+	for {
+		b := make([]byte, 10)
+		read, _ := infile.Read(b)
+		if read < 1 {
+			break
+		}
+		outfile.Write(b)
+	}
+
+	infile.Close()
+	outfile.Close()
 }
 
 // ROOT ONLY - We create chart script and send it to children so they can update their charts
@@ -78,10 +96,9 @@ func (s *Server) HandleNewMachine(msg string) {
 //TODO na razie info zwrotne idzie do wszystkich dzieci
 func (s *Server) SIPMessageReaction(msg string) {
 	switch sip.ExtractType(msg) {
-		//case "INF" : 
 		case "BLD", "REQ" :
 			s.AskChildren(sip.InfoMsg(msg))
-			if s.Root {
+			if s.Root != nil {
 				s.HandleNewMachine(msg)
 			} else {
 				s.TellParent(msg)
