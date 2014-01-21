@@ -7,11 +7,11 @@ type Node struct {
 	size      int
 
 	// all children, size = computer's capacity
-	children  []Node*
+	children  []*Node
 }
 
-func NewNode(ip string, capacity) *Node {
-	chld := make([]Node*, capacity)
+func NewNode(ip string, capacity int) *Node {
+	chld := make([]*Node, capacity)
 
 	return &Node{ip, 0, chld}
 }

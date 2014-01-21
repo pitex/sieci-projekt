@@ -1,8 +1,13 @@
 package joinservice
 
-import "net"
-import "log"
-import "tree"
+import (
+	"net"
+	"log"
+	"./tree"
+	"fmt"
+	"os"
+	"../protocols/sip"
+)
 
 type ServerFullError struct {
 	Address	string
@@ -40,8 +45,8 @@ func (s *Server) HandleChartTransfer() {
 }
 
 // Data about node in format required by Google Charts.
-func NodeFormatted(node *tree.Node, string parent, string ToolTip) string {
-	return fmt.Sprintf("['%s','%s','%s'],", *node.IP, parent, ToolTip)
+func NodeFormatted(node *tree.Node, parent string, ToolTip string) string {
+	return fmt.Sprintf("['%s','%s','%s'],", node.IP, parent, ToolTip)
 }
 
 // ROOT ONLY - travelling tree and adding nodes' description into our script
@@ -58,7 +63,7 @@ func RewriteFile(input string, output string) {
 func (s *Server) CreateChart() {
 	os.Create("../resources/chart.html")
 	RewriteFile("../resources/chart_beg", "../resources/chart.html")
-	BuildChart()
+	s.BuildChart()
 	RewriteFile("../resources/chart_end", "../resources/chart.html")
 }
 
