@@ -91,9 +91,10 @@ func (s *Server) SIPMessageReaction(msg string) {
 			s.HandleChartTransfer()
 		case "FND" :
 			s.TellParent(sip.InfoMsg(msg))
-			pa, ca := sip.FNDInterpretation(msg)
-			if Address == pa { 
-				AddChild(ca)
+			DataMap := sip.InterpreteData(sip.ExtractData(msg))
+
+			if s.Address == DataMap["parent"] { 
+				s.AddChild(DataMap["child"])
 				break
 			}
 			s.AskChildren(msg)

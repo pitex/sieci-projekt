@@ -59,6 +59,12 @@ func ExtractType(msg string) (string) {
 	return msg[:3]
 }
 
+//
+func ExtractData(msg string) (string) {
+	splited_msg := strings.Split(msg, protocols.GetSep())
+	return splited_msg[1]
+}
+
 // Returns string representing feedback message.
 func InfoMsg(msg string) (string) {
 	var result string
