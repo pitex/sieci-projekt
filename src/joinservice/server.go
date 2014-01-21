@@ -58,19 +58,21 @@ func (s *Server) BuildChart() {
 // Rewrites input file to output file in APPEND MODE
 func RewriteFile(input string, output string) {
 	infile, _ := os.Open(input)
-	outfile, _ := os.OpenFile(output, os.O_APPEND, os.ModeAppend)
+	outfile, _ := os.OpenFile(output, os.O_RDWR|os.O_APPEND, 0660)
+
+	defer infile.Close()
+	defer outfile.Close()
 
 	for {
-		b := make([]byte, 10)
+		b := make([]byte, 1024)
 		read, _ := infile.Read(b)
-		if read < 1 {
+		
+		outfile.Write(b[:read])
+
+		if read < 1024 {
 			break
 		}
-		outfile.Write(b)
 	}
-
-	infile.Close()
-	outfile.Close()
 }
 
 // ROOT ONLY - We create chart script and send it to children so they can update their charts

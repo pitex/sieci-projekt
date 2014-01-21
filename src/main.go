@@ -7,7 +7,6 @@ import (
 	"log"
 	"strconv"
 	"strings"
-	// "net"
 	"./joinservice"
 )
 
