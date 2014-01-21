@@ -6,6 +6,7 @@ import (
 	"./tree"
 	"os"
 	"../protocols/sip"
+	// "../protocols/stp"
 )
 
 type ServerFullError struct {
@@ -17,15 +18,25 @@ func (err ServerFullError) Error() string {
 }
 
 type Server struct {
+	//	Server IP.
 	Address		string
+
+	//	Connection to parent in network.
 	Parent		net.Conn
+
+	//	Connections to children.
 	Children	[]net.Conn
+
+	//	How many children already exist.
 	ChildNumber	int
 
 	// If the server is root, it is pointer to node representing it, otherwise it is nil.
 	Root		*tree.Node
 }
 
+//	Creates a new server with giben ip and capacity:
+//	-	if root is false, it gets connected to parent,
+//	-	else initializes tree node representing network structure.
 func NewServer(ip string, parent string, capacity int, root bool) *Server{
 	var socket net.Conn
 	var err error
@@ -45,7 +56,6 @@ func NewServer(ip string, parent string, capacity int, root bool) *Server{
 
 // We receive the chart script from our parent, we have to handle the data and send it to children.
 func (s *Server) HandleChartTransfer() {
-	
 }
 
 // ROOT ONLY - travelling tree and adding nodes' description into our script
