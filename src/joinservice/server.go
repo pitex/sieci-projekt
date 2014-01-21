@@ -4,7 +4,6 @@ import (
 	"net"
 	"log"
 	"./tree"
-	"fmt"
 	"os"
 	"../protocols/sip"
 )
@@ -49,14 +48,11 @@ func (s *Server) HandleChartTransfer() {
 	
 }
 
-// Data about node in format required by Google Charts.
-func NodeFormatted(node *tree.Node, parent string, ToolTip string) string {
-	return fmt.Sprintf("['%s','%s','%s'],", node.IP, parent, ToolTip)
-}
-
 // ROOT ONLY - travelling tree and adding nodes' description into our script
 func (s *Server) BuildChart() {
-
+	f, _ := os.OpenFile("../resources/chart.html", os.O_APPEND, os.ModeAppend)
+	tree.DFS(s.Root, "", f)
+	f.Close()
 }
 
 // Rewrites input file to output file in APPEND MODE
