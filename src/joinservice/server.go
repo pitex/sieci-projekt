@@ -89,7 +89,7 @@ func SendChart(ip string) {
 
 //	We receive the chart script from our parent, we have to handle the data and send it to children.
 func (s *Server) HandleChartTransfer(socket net.Conn) {
-	file, _ := os.Create("./resources/chart1.html")
+	file, _ := os.Create("./resources/chart.html")
 
 	log.Println("Begginning receiving chart")
 
