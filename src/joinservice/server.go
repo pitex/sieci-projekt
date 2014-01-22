@@ -6,6 +6,7 @@ import (
 	"./tree"
 	"os"
 	"../protocols/sip"
+	"strconv"
 	// "../protocols/stp"
 )
 
@@ -97,7 +98,12 @@ func (s *Server) CreateChart() {
 // We need to find it place in out net and send the information about it to our children.
 // We also need to create updated chart and send it to children, too.
 func (s *Server) HandleNewMachine(msg string) {
-	
+	DataMap := sip.InterpreteData(sip.ExtractData(msg))
+	fatherNode, _ := tree.FindSolution(s.Root, -1)
+	cap, _ := strconv.Atoi(DataMap["capacity"])
+	tree.AddNewChild(fatherNode, tree.NewNode(DataMap["ip"], cap))
+	newMes := sip.FND(fatherNode.IP, DataMap["ip"])
+	s.AskChildren(newMes.ToString())
 }
 
 // Determines how to react for a SIM message depending on its type.
