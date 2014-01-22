@@ -121,9 +121,8 @@ func Request(socket net.Conn, msg Message) (error) {
 	log.Printf("Waiting for response\n")
 
 	resp := make([]byte, 4096)
-	var n int
 
-	n, err = socket.Read(resp)
+	_, err = socket.Read(resp)
 
 	if err != nil {
 		return err

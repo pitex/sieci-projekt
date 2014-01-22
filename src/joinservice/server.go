@@ -7,7 +7,7 @@ import (
 	"os"
 	"../protocols/sip"
 	"strconv"
-	// "../protocols/stp"
+	"../protocols/stp"
 )
 
 type ServerFullError struct {
@@ -59,22 +59,22 @@ func NewServer(ip string, parent string, capacity int, root bool) *Server{
 func SendChart(sock net.Conn) {
 	sipMsg := sip.Message{}
 	sipMsg.Type = "TRA"
-	err := sip.Request(sipMsg)
+	err := sip.Request(sock, sipMsg)
 
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	chart := os.Open("../resources/chart.html")
+	chart, _ := os.Open("../resources/chart.html")
 	fileBytes := make([]byte, 2048)
 
 	for {
 		n, _ := chart.Read(fileBytes)
 
-		stpMsg := stp.Message
+		stpMsg := stp.Message{}
 		stpMsg.Data = string(fileBytes[:n])
 
-		err = stp.Request(stpMsg)
+		err = stp.Request(sock, stpMsg)
 
 		if err != nil {
 			log.Fatal(err)
@@ -95,7 +95,7 @@ func (s *Server) HandleChartTransfer() {
 
 		n, _ := s.Parent.Read(read)
 
-		if sip.ExtractType(read) == "END" {
+		if sip.ExtractType(string(read)) == "END" {
 			break
 		}
 
