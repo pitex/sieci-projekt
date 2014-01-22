@@ -60,7 +60,7 @@ func GetDataSep() string {
 	return ","
 }
 
-// Returns type of given string representing message. 
+//	Returns type of given string representing message. 
 func ExtractType(msg string) (string) {
 	return strings.Split(msg, protocols.GetSep())[0]
 }
@@ -109,16 +109,25 @@ func GetMessage(msg string) (Message){
 }
 
 //	Performs request msg through socket and returns response.
-func Request(socket net.Conn, msg Message) (*Message, error) {
+func Request(socket net.Conn, msg Message) (error) {
 	log.Printf("Sending message: %s\n",msg.ToString())
 
 	_, err := socket.Write([]byte(msg.ToString()))
 
 	if err != nil {
-		return nil, err
+		return err
 	}
 
 	log.Printf("Waiting for response\n")
 
-	return nil, nil
+	resp := make([]byte, 4096)
+	var n int
+
+	n, err = socket.Read(resp)
+
+	if err != nil {
+		return err
+	}
+
+	return nil
 }
