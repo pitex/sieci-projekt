@@ -55,18 +55,68 @@ func NewServer(ip string, parent string, capacity int, root bool) *Server{
 	return  &Server{ip, socket, make([]net.Conn, capacity-1), 0, tree.NewNode(ip, capacity)}
 }
 
-// We receive the chart script from our parent, we have to handle the data and send it to children.
-func (s *Server) HandleChartTransfer() {
+//	Sends chart through given socket
+func SendChart(sock net.Conn) {
+	sipMsg := sip.Message{}
+	sipMsg.Type = "TRA"
+	err := sip.Request(sipMsg)
+
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	chart := os.Open("../resources/chart.html")
+	fileBytes := make([]byte, 2048)
+
+	for {
+		n, _ := chart.Read(fileBytes)
+
+		stpMsg := stp.Message
+		stpMsg.Data = string(fileBytes[:n])
+
+		err = stp.Request(stpMsg)
+
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		if n < 2048 {
+			break
+		}
+	}
 }
 
-// ROOT ONLY - travelling tree and adding nodes' description into our script
+//	We receive the chart script from our parent, we have to handle the data and send it to children.
+func (s *Server) HandleChartTransfer() {
+	file, _ := os.Create("../resources/chart.html")
+
+	for {
+		read := make([]byte, 4096)
+
+		n, _ := s.Parent.Read(read)
+
+		if sip.ExtractType(read) == "END" {
+			break
+		}
+
+		file.Write(read[:n])
+	}
+
+	file.Close()
+
+	for i := 0; i<s.ChildNumber; i++ {
+		SendChart(s.Children[i])
+	}
+}
+
+//	ROOT ONLY - travelling tree and adding nodes' description into our script
 func (s *Server) BuildChart() {
 	f, _ := os.OpenFile("../resources/chart.html", os.O_APPEND, os.ModeAppend)
 	tree.DFS(s.Root, "", f)
 	f.Close()
 }
 
-// Rewrites input file to output file in APPEND MODE
+//	Rewrites input file to output file in APPEND MODE
 func RewriteFile(input string, output string) {
 	infile, _ := os.Open(input)
 	outfile, _ := os.OpenFile(output, os.O_RDWR|os.O_APPEND, 0660)
@@ -86,7 +136,7 @@ func RewriteFile(input string, output string) {
 	}
 }
 
-// ROOT ONLY - We create chart script and send it to children so they can update their charts
+//	ROOT ONLY - We create chart script and send it to children so they can update their charts
 func (s *Server) CreateChart() {
 	os.Create("../resources/chart.html")
 	RewriteFile("../resources/chart_beg", "../resources/chart.html")
@@ -94,9 +144,9 @@ func (s *Server) CreateChart() {
 	RewriteFile("../resources/chart_end", "../resources/chart.html")
 }
 
-// ROOT ONLY - When we know that there is a new machine pending. 
-// We need to find it place in out net and send the information about it to our children.
-// We also need to create updated chart and send it to children, too.
+//	ROOT ONLY - When we know that there is a new machine pending. 
+//	We need to find it place in out net and send the information about it to our children.
+//	We also need to create updated chart and send it to children, too.
 func (s *Server) HandleNewMachine(msg string) {
 	DataMap := sip.InterpreteData(sip.ExtractData(msg))
 	fatherNode, _ := tree.FindSolution(s.Root, -1)
@@ -106,7 +156,7 @@ func (s *Server) HandleNewMachine(msg string) {
 	s.AskChildren(newMes.ToString())
 }
 
-// Determines how to react for a SIM message depending on its type.
+//	Determines how to react for a SIM message depending on its type.
 //TODO na razie info zwrotne idzie do wszystkich dzieci
 func (s *Server) SIPMessageReaction(msg string) {
 	switch sip.ExtractType(msg) {
@@ -132,23 +182,23 @@ func (s *Server) SIPMessageReaction(msg string) {
 	}
 }
 
-// Sending msg to all children.
+//	Sending msg to all children.
 func (s *Server) AskChildren(msg string) {
 	byteMsg := []byte(msg)
 
 	for _, child := range s.Children {
-		child.Write(byteMsg)
+			child.Write(byteMsg)
 	}
 }
 
-// Sending msg to parent.
+//	Sending msg to parent.
 func (s *Server) TellParent(msg string) {
 	byteMsg := []byte(msg)
 
 	s.Parent.Write(byteMsg)
 }
 
-// When we receive information that we are to create a connection with new machine, it becomes our child.
+//	When we receive information that we are to create a connection with new machine, it becomes our child.
 func (s *Server) AddChild(address string) error {
 	if len(s.Children) == s.ChildNumber {
 		return ServerFullError{s.Address}
