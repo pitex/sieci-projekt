@@ -21,7 +21,7 @@ func Request(socket net.Conn, msg Message) error {
 		return err
 	}
 
-	resp := make([]byte, 2048)
+	resp := make([]byte, 4096)
 
 	_, err = socket.Read(resp)
 
