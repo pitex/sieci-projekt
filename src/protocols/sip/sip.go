@@ -27,11 +27,19 @@ type Message struct {
 
 //	Adds a k=v pair to data.
 func (msg *Message) AddData(k, v string) {
+	if msg.Data == nil {
+		msg.Data = make(map[string]string)
+	}
+
 	msg.Data[k] = v
 }
 
 //	Removes value associated with key k.
 func (msg *Message) RemoveData(k string) {
+	if msg.Data == nil {
+		msg.Data = make(map[string]string)
+	}
+
 	delete(msg.Data, k)
 }
 
@@ -52,6 +60,10 @@ func ParseDataToString(data map[string]string) string {
 
 //	Returns string representation of the message.
 func (msg *Message) ToString() string {
+	if msg.Data == nil {
+		msg.Data = make(map[string]string)
+	}
+
 	return fmt.Sprintf("%s%s%s%s%s", msg.Type, protocols.GetSep(), ParseDataToString(msg.Data), protocols.GetSep(), msg.Error)
 }
 
@@ -108,6 +120,14 @@ func GetMessage(msg string) (Message){
 	return Message{splited_msg[0], InterpreteData(splited_msg[1]), splited_msg[2]}
 }
 
+//	Sends an info message through socket.
+func SendInfo(socket net.Conn, msg string) {
+	log.Printf("Sending %s\n",InfoMsg(msg))
+	_, err := socket.Write([]byte(InfoMsg(msg)))
+	log.Println("SendInfo err:")
+	log.Println(err)
+}
+
 //	Performs request msg through socket and returns response.
 func Request(socket net.Conn, msg Message) (error) {
 	log.Printf("Sending message: %s\n",msg.ToString())
@@ -118,9 +138,11 @@ func Request(socket net.Conn, msg Message) (error) {
 		return err
 	}
 
-	log.Printf("Waiting for response\n")
+	log.Printf("Waiting for INF\n")
 
 	resp := make([]byte, 4096)
+
+	log.Println("Got INF")
 
 	_, err = socket.Read(resp)
 

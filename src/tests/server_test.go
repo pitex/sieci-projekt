@@ -1,6 +1,6 @@
 package test
 
-import "./joinservice"
+import "../joinservice"
 import "testing"
 import "os"
 

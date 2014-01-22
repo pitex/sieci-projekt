@@ -36,23 +36,20 @@ func (c *Client) Connect() (string, error) {
 
 	//	Setup connection
 	log.Printf("Creating socket to %s\n", c.KnownIp)
-	conn, err := net.Dial("tcp", c.KnownIp) 
+	conn, err := net.Dial("tcp", c.KnownIp+":666") 
 	if err != nil {
 		return "", err
 	}
 
 	//	Create request
 	log.Println("Creating message")
-	request := new(sip.Message)
+	request := sip.Message{}
 	request.Type = "REQ"
-	request.AddData("IP", c.Address)
-	request.AddData("CAP", string(c.Capacity))
-
-	byteRequest := []byte(request.ToString())
+	request.AddData("ip", c.Address)
+	request.AddData("capacity", string(c.Capacity))
 
 	//	Send request
-	log.Printf("Sending message: %s\n", request.ToString())
-	_, err = conn.Write(byteRequest)
+	err = sip.Request(conn, request)
 
 	//	Check if sending was successful
 	if err != nil {
@@ -78,10 +75,10 @@ func (c *Client) Connect() (string, error) {
 	data := strings.Split(response[1], sip.GetDataSep())
 
 	//	Find server address
-	log.Printf("Looking for IP in data: %s\n", data)
+	log.Printf("Looking for parent IP in data: %s\n", data)
 	for _, s := range data {
 		kv := strings.Split(s, "=")
-		if (kv[0] == "IP") {
+		if (kv[0] == "parent") {
 			return kv[1], nil
 		}
 	}

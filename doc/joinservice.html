@@ -1,0 +1,402 @@
+<!--
+	Copyright 2009 The Go Authors. All rights reserved.
+	Use of this source code is governed by a BSD-style
+	license that can be found in the LICENSE file.
+-->
+<!--
+	Note: Static (i.e., not template-generated) href and id
+	attributes start with "pkg-" to make it impossible for
+	them to conflict with generated attributes (some of which
+	correspond to Go identifiers).
+-->
+
+	
+		
+		<div id="short-nav">
+			<dl>
+			<dd><code>import "."</code></dd>
+			</dl>
+			<dl>
+			<dd><a href="#pkg-overview" class="overviewLink">Overview</a></dd>
+			<dd><a href="#pkg-index" class="indexLink">Index</a></dd>
+			
+			
+				<dd><a href="#pkg-subdirectories">Subdirectories</a></dd>
+			
+			</dl>
+		</div>
+		<!-- The package's Name is printed as title by the top-level template -->
+		<div id="pkg-overview" class="toggleVisible">
+			<div class="collapsed">
+				<h2 class="toggleButton" title="Click to show Overview section">Overview ▹</h2>
+			</div>
+			<div class="expanded">
+				<h2 class="toggleButton" title="Click to hide Overview section">Overview ▾</h2>
+				
+			</div>
+		</div>
+		
+
+		<div id="pkg-index" class="toggleVisible">
+		<div class="collapsed">
+			<h2 class="toggleButton" title="Click to show Index section">Index ▹</h2>
+		</div>
+		<div class="expanded">
+			<h2 class="toggleButton" title="Click to hide Index section">Index ▾</h2>
+
+		<!-- Table of contents for API; must be named manual-nav to turn off auto nav. -->
+			<div id="manual-nav">
+			<dl>
+			
+			
+			
+				
+				<dd><a href="#RewriteFile">func RewriteFile(input string, output string)</a></dd>
+			
+				
+				<dd><a href="#SendChart">func SendChart(ip string)</a></dd>
+			
+			
+				
+				<dd><a href="#Client">type Client</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#NewClient">func NewClient(address string, capacity int, knownIp string, root bool) *Client</a></dd>
+				
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#Client.Connect">func (c *Client) Connect() (string, error)</a></dd>
+				
+			
+				
+				<dd><a href="#Server">type Server</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#NewServer">func NewServer(ip string, parent string, capacity int, root bool) *Server</a></dd>
+				
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#Server.AddChild">func (s *Server) AddChild(address string) error</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#Server.AskChildren">func (s *Server) AskChildren(msg string)</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#Server.BuildChart">func (s *Server) BuildChart()</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#Server.CreateChart">func (s *Server) CreateChart()</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#Server.HandleChartTransfer">func (s *Server) HandleChartTransfer(socket net.Conn)</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#Server.HandleNewMachine">func (s *Server) HandleNewMachine(msg string)</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#Server.SIPMessageReaction">func (s *Server) SIPMessageReaction(socket net.Conn, msg string)</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#Server.Start">func (s *Server) Start() error</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#Server.TellParent">func (s *Server) TellParent(msg string)</a></dd>
+				
+			
+				
+				<dd><a href="#ServerFullError">type ServerFullError</a></dd>
+				
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#ServerFullError.Error">func (err ServerFullError) Error() string</a></dd>
+				
+			
+			
+			</dl>
+			</div><!-- #manual-nav -->
+
+		
+
+		
+			<h4>Package files</h4>
+			<p>
+			<span style="font-size:90%">
+			
+				<a href="/target/client.go">client.go</a>
+			
+				<a href="/target/server.go">server.go</a>
+			
+			</span>
+			</p>
+		
+		</div><!-- .expanded -->
+		</div><!-- #pkg-index -->
+
+		
+		
+		
+			
+			
+			<h2 id="RewriteFile">func <a href="/target/server.go?s=2220:2265#L102">RewriteFile</a></h2>
+			<pre>func RewriteFile(input <a href="/pkg/builtin/#string">string</a>, output <a href="/pkg/builtin/#string">string</a>)</pre>
+			<p>
+Rewrites input file to output file in APPEND MODE
+</p>
+
+			
+		
+			
+			
+			<h2 id="SendChart">func <a href="/target/server.go?s=1009:1034#L39">SendChart</a></h2>
+			<pre>func SendChart(ip <a href="/pkg/builtin/#string">string</a>)</pre>
+			<p>
+Sends chart through given socket
+</p>
+
+			
+		
+		
+			
+			
+			<h2 id="Client">type <a href="/target/client.go?s=94:352#L1">Client</a></h2>
+			<pre>type Client struct {
+    <span class="comment">//	Address of the client computer.</span>
+    Address <a href="/pkg/builtin/#string">string</a>
+
+    <span class="comment">//	Address of a computer in the existing network.</span>
+    KnownIp <a href="/pkg/builtin/#string">string</a>
+
+    <span class="comment">//	How many connections can be handled.</span>
+    Capacity <a href="/pkg/builtin/#int">int</a>
+
+    <span class="comment">//	Is this computer first in the network.</span>
+    IsRoot <a href="/pkg/builtin/#bool">bool</a>
+}</pre>
+			
+
+			
+
+			
+
+			
+
+			
+				
+				<h3 id="NewClient">func <a href="/target/client.go?s=424:503#L16">NewClient</a></h3>
+				<pre>func NewClient(address <a href="/pkg/builtin/#string">string</a>, capacity <a href="/pkg/builtin/#int">int</a>, knownIp <a href="/pkg/builtin/#string">string</a>, root <a href="/pkg/builtin/#bool">bool</a>) *<a href="#Client">Client</a></pre>
+				<p>
+Creates a new Client object using given parameters and returns it.
+</p>
+
+				
+			
+
+			
+				
+				<h3 id="Client.Connect">func (*Client) <a href="/target/client.go?s=711:753#L24">Connect</a></h3>
+				<pre>func (c *<a href="#Client">Client</a>) Connect() (<a href="/pkg/builtin/#string">string</a>, <a href="/pkg/builtin/#error">error</a>)</pre>
+				<p>
+Asks computer from network where to connect to.
+Returns address of the computer to which client should connect.
+</p>
+
+				
+				
+			
+		
+			
+			
+			<h2 id="Server">type <a href="/target/server.go?s=264:557#L11">Server</a></h2>
+			<pre>type Server struct {
+    <span class="comment">//	Server IP.</span>
+    Address <a href="/pkg/builtin/#string">string</a>
+
+    <span class="comment">//	Network parent IP.</span>
+    Parent <a href="/pkg/builtin/#string">string</a>
+
+    <span class="comment">//	Children IPs.</span>
+    Children []<a href="/pkg/builtin/#string">string</a>
+
+    <span class="comment">//	How many children already exist.</span>
+    ChildNumber <a href="/pkg/builtin/#int">int</a>
+
+    <span class="comment">// If the server is root, it is pointer to node representing it, otherwise it is nil.</span>
+    Root *<a href="/pkg/./tree/">tree</a>.<a href="/pkg/./tree/#Node">Node</a>
+}</pre>
+			
+
+			
+
+			
+
+			
+
+			
+				
+				<h3 id="NewServer">func <a href="/target/server.go?s=727:800#L31">NewServer</a></h3>
+				<pre>func NewServer(ip <a href="/pkg/builtin/#string">string</a>, parent <a href="/pkg/builtin/#string">string</a>, capacity <a href="/pkg/builtin/#int">int</a>, root <a href="/pkg/builtin/#bool">bool</a>) *<a href="#Server">Server</a></pre>
+				<p>
+Creates a new server with giben ip and capacity:
+-	if root is false, it gets connected to parent,
+-	else initializes tree node representing network structure.
+</p>
+
+				
+			
+
+			
+				
+				<h3 id="Server.AddChild">func (*Server) <a href="/target/server.go?s=4535:4582#L185">AddChild</a></h3>
+				<pre>func (s *<a href="#Server">Server</a>) AddChild(address <a href="/pkg/builtin/#string">string</a>) <a href="/pkg/builtin/#error">error</a></pre>
+				<p>
+When we receive information that we are to create a connection with new machine, it becomes our child.
+</p>
+
+				
+				
+			
+				
+				<h3 id="Server.AskChildren">func (*Server) <a href="/target/server.go?s=4054:4094#L167">AskChildren</a></h3>
+				<pre>func (s *<a href="#Server">Server</a>) AskChildren(msg <a href="/pkg/builtin/#string">string</a>)</pre>
+				<p>
+Sending msg to all children.
+</p>
+
+				
+				
+			
+				
+				<h3 id="Server.BuildChart">func (*Server) <a href="/target/server.go?s=2020:2049#L95">BuildChart</a></h3>
+				<pre>func (s *<a href="#Server">Server</a>) BuildChart()</pre>
+				<p>
+ROOT ONLY - travelling tree and adding nodes&#39; description into our script
+</p>
+
+				
+				
+			
+				
+				<h3 id="Server.CreateChart">func (*Server) <a href="/target/server.go?s=2631:2661#L122">CreateChart</a></h3>
+				<pre>func (s *<a href="#Server">Server</a>) CreateChart()</pre>
+				<p>
+ROOT ONLY - We create chart script and send it to children so they can update their charts
+</p>
+
+				
+				
+			
+				
+				<h3 id="Server.HandleChartTransfer">func (*Server) <a href="/target/server.go?s=1600:1653#L72">HandleChartTransfer</a></h3>
+				<pre>func (s *<a href="#Server">Server</a>) HandleChartTransfer(socket <a href="/pkg/net/">net</a>.<a href="/pkg/net/#Conn">Conn</a>)</pre>
+				<p>
+We receive the chart script from our parent, we have to handle the data and send it to children.
+</p>
+
+				
+				
+			
+				
+				<h3 id="Server.HandleNewMachine">func (*Server) <a href="/target/server.go?s=3079:3124#L132">HandleNewMachine</a></h3>
+				<pre>func (s *<a href="#Server">Server</a>) HandleNewMachine(msg <a href="/pkg/builtin/#string">string</a>)</pre>
+				<p>
+ROOT ONLY - When we know that there is a new machine pending.
+We need to find it place in out net and send the information about it to our children.
+We also need to create updated chart and send it to children, too.
+</p>
+
+				
+				
+			
+				
+				<h3 id="Server.SIPMessageReaction">func (*Server) <a href="/target/server.go?s=3491:3555#L142">SIPMessageReaction</a></h3>
+				<pre>func (s *<a href="#Server">Server</a>) SIPMessageReaction(socket <a href="/pkg/net/">net</a>.<a href="/pkg/net/#Conn">Conn</a>, msg <a href="/pkg/builtin/#string">string</a>)</pre>
+				<p>
+Determines how to react for a SIM message depending on its type.
+</p>
+
+				
+				
+			
+				
+				<h3 id="Server.Start">func (*Server) <a href="/target/server.go?s=5004:5034#L206">Start</a></h3>
+				<pre>func (s *<a href="#Server">Server</a>) Start() <a href="/pkg/builtin/#error">error</a></pre>
+				<p>
+Starts server - it listens on port 666.
+</p>
+
+				
+				
+			
+				
+				<h3 id="Server.TellParent">func (*Server) <a href="/target/server.go?s=4274:4313#L177">TellParent</a></h3>
+				<pre>func (s *<a href="#Server">Server</a>) TellParent(msg <a href="/pkg/builtin/#string">string</a>)</pre>
+				<p>
+Sending msg to parent.
+</p>
+
+				
+				
+			
+		
+			
+			
+			<h2 id="ServerFullError">type <a href="/target/server.go?s=114:161#L3">ServerFullError</a></h2>
+			<pre>type ServerFullError struct {
+    Address <a href="/pkg/builtin/#string">string</a>
+}</pre>
+			
+
+			
+
+			
+
+			
+
+			
+
+			
+				
+				<h3 id="ServerFullError.Error">func (ServerFullError) <a href="/target/server.go?s=163:204#L7">Error</a></h3>
+				<pre>func (err <a href="#ServerFullError">ServerFullError</a>) Error() <a href="/pkg/builtin/#string">string</a></pre>
+				
+				
+				
+			
+		
+	
+
+	
+
+
+
+
+
+	
+	
+		<h2 id="pkg-subdirectories">Subdirectories</h2>
+	
+	<table class="dir">
+	<tr>
+	<th>Name</th>
+	<th>&nbsp;&nbsp;&nbsp;&nbsp;</th>
+	<th style="text-align: left; width: auto">Synopsis</th>
+	</tr>
+	
+		<tr>
+		<td><a href="..">..</a></td>
+		</tr>
+	
+	
+		
+			<tr>
+			<td class="name"><a href="tree/">tree</a></td>
+			<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+			<td style="width: auto"></td>
+			</tr>
+		
+	
+	</table>
+	
+
+
+

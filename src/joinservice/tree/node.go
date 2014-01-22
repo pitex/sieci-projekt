@@ -28,7 +28,7 @@ func NodeFormatted(node *Node, parent string, ToolTip string) string {
 
 // DFS writing into given file, for need of Google Charts
 func DFS(node *Node, parent string, file *os.File) {
-	file.WriteString(NodeFormatted(node, parent, ""))
+	file.Write([]byte(NodeFormatted(node, parent, "")))
 	for i := 0; i < node.size; i++ {
 		DFS(node.children[i], node.IP, file)
 	}
