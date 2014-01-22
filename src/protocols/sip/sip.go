@@ -129,5 +129,7 @@ func Request(socket net.Conn, msg Message) (*Message, error) {
 		return nil, err
 	}
 
+	log.Printf("Waiting for response\n")
+
 	return nil, nil
 }
