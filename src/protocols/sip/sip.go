@@ -14,6 +14,7 @@ type Message struct {
 	//	INF - 'yes, I received your msg'
 	// 
 	//	TRA - 'after you receive this message I will begin sending you parted file', sent from parent to child only
+	//	END - 'sending is complete'
 	// 
 	//	REQ - 'I received a request of a new machine' sent to parent only, data fields: ip, capacity
 	//	FND - 'I am sending a message about who should be new machine's parent' sent do child only, data fields: parent, child 
@@ -61,16 +62,16 @@ func GetDataSep() string {
 
 // Returns type of given string representing message. 
 func ExtractType(msg string) (string) {
-	return msg[:3]
+	return strings.Split(msg, protocols.GetSep())[0]
 }
 
-//
+//	Returns data as string from string.
 func ExtractData(msg string) (string) {
 	splited_msg := strings.Split(msg, protocols.GetSep())
 	return splited_msg[1]
 }
 
-// Returns string representing feedback message.
+//	Returns string representing feedback message.
 func InfoMsg(msg string) (string) {
 	var result string
 	result = "INF" + msg[3:]
@@ -100,7 +101,7 @@ func InterpreteData(data string) map[string]string {
 	return result
 }
 
-// Returns struct Message while given a string describing it.
+//	Returns struct Message while given a string describing it.
 func GetMessage(msg string) (Message){
 	splited_msg := strings.Split(msg, protocols.GetSep())
 	
