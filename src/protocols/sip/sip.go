@@ -77,25 +77,13 @@ func InfoMsg(msg string) (string) {
 	return result
 }
 
-/* do not delete, may be useful
-// Extracts parent's and new child's addresses
-func FNDInterpretation(msg string) (string, string) {
-	var parent string
-	var child string
-	//TODO depending on message format
-	splited_msg = Split(msg, protocols.GetSep())
-	data = Split(splited_msg[1], GetDataSep())
-	
-	if Contains(data[0], 'parent') {
-		parent = data[0][strings.Index(data[0], '='):]
-		child = data[1][strings.Index(data[1], '='):]
-	} else {
-		child = data[0][strings.Index(data[0], '='):]
-		parent = data[1][strings.Index(data[1], '='):]
-	}
+func FND(child string, parent string) (Message) {
+	var data = make(map[string]string)
+	data["child"] = child
+	data["parent"] = parent
 
-	return parent, child
-}*/
+	return Message{"FND", data, ""}
+}
 
 //	Parses data string to key-value map.
 func InterpreteData(data string) map[string]string {
