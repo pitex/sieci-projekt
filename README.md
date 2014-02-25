@@ -1,13 +1,3 @@
-określenie problemu
-=============
-
-Tworzymy sieć komputerową o strukturze drzewowej, dla każdej maszyny istnieje z góry określona maksymalna pojemność - ilość maszyn, z którymi może być połączona (zakładamy, że jest to liczba większa od 2). Chcemy zachować najmniejszą możliwą średnicę sieci, tj. chcemy, aby odległość między najbardziej oddalonymi wierzchołkami była jak najmniejsza. Dochodzi nowy komputer, który musimy dodać on-line. Co robimy?
-
-czyli, inaczej...
-=============
-Jesteśmy młodą firmą, tworzymy sieć komputerową na własne, wewnętrzne potrzeby.
-Potrzebujemy aplikacji, która nam w tym pomoże.
-
 propozycja rozwiązania
 =============
 
