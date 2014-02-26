@@ -1,0 +1,29 @@
+<html>
+  <head>
+    <script type='text/javascript' src='https://www.google.com/jsapi'></script>
+    <script type='text/javascript'>
+      google.load('visualization', '1', {packages:['orgchart']});
+      google.setOnLoadCallback(drawChart);
+      function drawChart() {
+        var data = new google.visualization.DataTable();
+        data.addColumn('string', 'ID');
+        data.addColumn('string', 'parent');
+        data.addColumn('string', 'ToolTip');
+        data.addRows([
+        	['192.168.120.10', null, ''], 
+        	['192.168.120.13', '192.168.120.10', ''], 
+        	['192.168.120.11', '192.168.120.13', ''],
+        	['192.168.120.17', '192.168.120.10', ''],
+        	['192.168.120.19', '192.168.120.10', ''],
+        	['192.168.120.23', '192.168.120.13', '']
+        ]);
+        var chart = new google.visualization.OrgChart(document.getElementById('chart_div'));
+        chart.draw(data, {allowHtml:true});
+      }
+    </script>
+  </head>
+
+  <body>
+    <div id='chart_div'></div>
+  </body>
+</html>      
