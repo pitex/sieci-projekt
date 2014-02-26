@@ -1,4 +1,4 @@
-\documentclass[b5paper,11pt,final,titlepage]{article}
+\documentclass[b5paper,11pt,final]{article}
 
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
@@ -22,16 +22,41 @@
 
 
 
-\author{KASIA JANOCHA, MICHAŁ PIEKARZ}
-\title{SIEĆ KOMPUTEROWA - DIY
+\begin{titlepage}
+\begin{center}
+
+% Upper part of the page. The '~' is needed because \\
+% only works if a paragraph has started.
+
+
+
+\LARGE{HAPPY BOSS
 \\CZYLI BĄDŹ ADMINEM WE WŁASNEJ FIRMIE}
-\date{}
+
+\Large{Katarzyna Janocha, Michał Piekarz~\\[1cm]}
+
+\includegraphics[width=0.7\textwidth]{boss.png}
+
+
+\end{center}
+\end{titlepage}
+
+%\author{KASIA JANOCHA, MICHAŁ PIEKARZ}
+%\title{HAPPY BOSS
+%\\CZYLI BĄDŹ ADMINEM WE WŁASNEJ FIRMIE}
+%\date{}
 
 
 \begin{document}
 
 \DeclareGraphicsExtensions{.jpg,~.pdf,~.mps,~.png,~.JPG}
 \maketitle \tableofcontents
+
+%\begin{figure}[ht!]
+%\centering
+%\includegraphics[width=90mm]{boss.png} 
+%\label{overflow}
+%\end{figure}
 
 \include{wzorzec_wstep}
 
@@ -42,7 +67,5 @@
 \include{wzorzec_tech}
 
 \include{wzorzec_podzial}
-
-\include{wzorzec_podsumowanie}
 
 \end{document}
