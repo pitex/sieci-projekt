@@ -60,7 +60,7 @@ func SendChart(ip string) {
 		log.Fatal(err)
 	}
 
-	chart, _ := os.Open("./resources/chart.html")
+	chart, _ := os.OpenFile("./resources/chart.html", os.O_RDWR|os.O_APPEND, 0660)
 	fileBytes := make([]byte, 2048)
 
 	log.Println("Begginning transfer")
