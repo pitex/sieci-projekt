@@ -36,7 +36,7 @@ type Server struct {
 	Root		*tree.Node
 }
 
-//	Creates a new server with giben ip and capacity:
+//	Creates a new server with given ip and capacity:
 //	-	if root is false, it gets connected to parent,
 //	-	else initializes tree node representing network structure.
 func NewServer(ip string, parent string, capacity int, root bool) *Server{
