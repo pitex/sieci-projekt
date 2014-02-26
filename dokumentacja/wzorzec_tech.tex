@@ -4,9 +4,26 @@
 \textit{Czyli szczegóły techniczne}
 \end{center}
 
+\subsection{Klient - serwer}
+Podstawową jednostką naszej sieci jest klient, czyli użytkownik. Klientem takim jest nowo dołączany komputer. Najważniejszą funkcjonalnością sieci jest komunikacja klienta z serwerem.\\
+Za obsługę tejże komunikacji odpowiedzialny jest package joinservice.go, a konkretnie - znajdujące się w nim implementacje client.go i server.go.\\
+Techniczne szczegóły dotyczące zamieszczonych w nich konstruktorów i metod znnajdują się w komentarzach, a zatem również w wygenerowanym docu. Komentarze są na tyle dokładne, ze nie wymagają dodatkowego tłumaczenia - zapraszamy do ich lektury!
 
+\subsection{Drzewo}
+Funkcjonalności naszej sieci opierają się na strukturze drzewa, które tworzy. Odpowiada za nie joinservice/tree.\\
+Klasa node.go trzyma reprezentację drzewa jako drzewa wskaźnikowego - każdy wierzchołek ma listę wskaźników do swoich dzieci.\\
+Funkcje DFS oraz FindSolution przeszukują drzewo metodą DFS na potrzeby obu funkcjonalności, które oferujemy.\\
+Dlatego obsługę drzewa zdecydowaliśmy się umieścić w pakiecie z klientem i serwerem. Jest to klasa kluczowa dla działania całej algorytmiki w aplikacji.
 
 \subsection{Protokoły}
+...znajdują się w pakiecie protocols. Opis ich działania zamieściliśmy w dokumentacji implementacyjnej.\\
+Z kodu w oczywisty sposób wynikają uzasadnienia poszczególnych naszych decyzji.\\
+Funkcje znajdujące się w protokołach to głównie funkcje pomocnicze służące do interpretacji, parse'owania i obsługi danych.\\
+Za budowę wiadomości odpowiada struct Message (w każdym protokole z osobna). W przypadku STP jest niezwykle prosty. Sposób, w jaki używamy go w SIP jasno wynika z komentarzy. Są w nich wyszczególnione możliwe typy wiadomości - są one kluczowe w naszej aplikacji, warto się z nimi zapoznać!
+
+\subsection{Pakiet resources}
+odpowiada za skrypt tworzenia grafu. Jest w niego wpisany kod skryptu, komputery budują odpowiedni plik łącząc pliki odpowiadające za początek i koniec skryptu.\\
+Zdecydowaliśmy się na takie rozwiązanie, ponieważ musimy wpisać "środek skryptu", który jest zmienny i odpowiada za kształt wykresu (patrz klasa node.go - jego funkcja DFS wpisuje do odpowiedniego pliku tenże "środek").
 
 \subsection{Szczegółowy opis działania wszystkich funkcji}
 ...znajduje się w załączonym anglojęzycznym docu.\\
