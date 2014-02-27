@@ -42,15 +42,16 @@ Jest to prosta, przydatna technologia, którą warto znać. Pozwala na tworzenie
 
 \subsection{Szczegóły rozwiązania: dodawanie nowego komputera}
 Informację o tym, że przychodzi nowy komputer, otrzymuje dowolna maszyna w naszej sieci. Następnie każdy wysyła zapytanie o wynik do swojego rodzica, w końcu dojdzie ono do korzenia.\\
-Korzeń znajduje wierzchołek, do którego należy podpiąć nową maszynę na wspomniany wcześniej sposób. Można do tego użyć zwyczajnego algorytmu DFS.\\
-Rozsyła później informację do wszystkich swoich dzieci, które przekazują ją dalej. Wiadomość rozprzestrzenia się w całej sieci.
+\indent Korzeń znajduje wierzchołek, do którego należy podpiąć nową maszynę na wspomniany wcześniej sposób. Można do tego użyć zwyczajnego algorytmu DFS.\\
+\indent Rozsyła później informację do wszystkich swoich dzieci, które przekazują ją dalej. Wiadomość rozprzestrzenia się w całej sieci.
 
 
 \subsection{Szczegóły rozwiązania: pierwotna idea na tworzenie wykresu}
 wierzchołek otrzymuje polecenie "zbuduj wykres". Wysyła wówczas do swojego rodzica tę wiadomość. Gdy wiadomość dochodzi do korzenia, tworzy on skrypt budujący wykres oraz rozsyła go do swoich dzieci z komunikatem mówiącym ZBUDOWAŁEM SKRYPT. Zostaje ona przekazana dalej.\\
 
 \subsection{Szczegóły rozwiązania: problem z tworzeniem wykresu i jego rozwiązanie}
-Jednakże, dziecko nie wie, czy zmiany w drzewie zaszły, zatem przy częstych prośbach o wykres nasza sieć zostanie zasypana niepotrzebnymi danymi.\\Zatem nowy wykres będzie tworzony razem z dodaniem nowego wierzchołka i wówczas rozsyłany, co oznacza, że każda maszyna trzyma sobie update'owany wykres.
+Jednakże, dziecko nie wie, czy zmiany w drzewie zaszły, zatem przy częstych prośbach o wykres nasza sieć zostanie zasypana niepotrzebnymi danymi.\\
+\indent Zatem nowy wykres będzie tworzony razem z dodaniem nowego wierzchołka i wówczas rozsyłany, co oznacza, że każda maszyna trzyma sobie update'owany wykres.
 
 \subsection{Wybrane protokoły}
 
@@ -60,14 +61,14 @@ Poniżej opisane są protokoły warstwy aplikacji.
 \subsection{Protokół SIP}
 
 PROTOKÓŁ 1 - PRZESYŁANIE INFORMACJI MIĘDZY KOMPUTERAMI (podczas tworzenia sieci, przekazywania informacji o klientach, "dogadywania się" w sprawie przesłania skryptu wykresu): wystarczy bardzo prosty protokół tekstowy. Jedyne informacje, jakie potrzebujemy, to: typ wiadomości, jej treść oraz ewentualna informacja o błędzie. Zauważmy, że jest to wiadomość, która jest bardzo niewielka, nie potrzebujemy zatem w żaden sposób "porcjować" danych. Będzie ona przekazywana w taki sposób, że wysyłamy tę samą wiadomość póki nie otrzymamy informacji zwrotnej - potwierdzenia jej otrzymania. \\
-Opis uzytych przez nas wiadomości oraz format danych znajduje się w dokumentacji.\\
+\indent Opis uzytych przez nas wiadomości oraz format danych znajduje się w dokumentacji.\\
 \\
-Protokołowi temu zdecydowaliśmy nadać nazwę Simple Information Protocol - w skrócie SIP.
+\indent Protokołowi temu zdecydowaliśmy nadać nazwę Simple Information Protocol - w skrócie SIP.
 
 \subsection{Protokół STP}
 PROTOKÓŁ 2 - PRZESYŁANIE WYKRESU: plik z wykresem może być duży, musimy zatem przesyłać go w mniejszych pakietach. Możemy użyć protokołu tekstowego i przekazać po prostu kod wykresu w JavaScripcie. Zauważmy, że komputery mogą ustalić między sobą fakt, że zaraz nastąpi tranfser danych za pomocą naszego protokołu. Następnie możemy podzielić przesyłany skrypt na odpowiednio małe fragmenty i przesyłać je do momentu otrzymania informacji zwrotnej na ich temat.\\
 \\
-Protokół ten nazwaliśmy Script Transfet Protocol - STP.
+\indent Protokół ten nazwaliśmy Script Transfet Protocol - STP.
 
 \subsection{Krótkie uzasadnienie}
 
@@ -75,5 +76,5 @@ Dlaczego zamiast używania SIP oraz STP nie użyjemy jednego protokołu, o forma
 
 \subsection{Bezpieczeństwo}
 Tworzona sieć jest na użytek wewnętrzny, zatem uznaliśmy, że nie musimy czynić dodatkowych wysiłków w celu gwarancji jej większego bezpieczeństwa. Jest ono częściowo zapewnione poprzez używanie sieci lokalnej. Aplikacja ma na celu utworzenie sieci bardzo prostej, służącej do wewnętrznej komunikacji pracowników, nie do przesyłania danych poufnych, które w wypadku firm niewielkich mogą znajdować się poza siecią. W wypadku, gdy Użytkownik będzie chciał przesyłać dane o znaczących rozmiarach czy dane o szczególnej poufności należałoby dorobić przynajmniej o jeden protokół więcej, nie posiadamy bowiem protokołu typu FTP.\\
-Jednakże, projektując aplikację zadbaliśmy o wprowadzenie metodyki Agile - "programowanie zwinne". Zakłada ona częste zmiany preferencji użytkowników, a co za tym idzie, wymaga łatwości w przeprowadzaniu modyfikacji kodu. Daje to możliwość dodania zabezpieczeń w wypadku dalszego rozwoju naszej aplikacji. \\
-Możliwości, jeśli chodzi o wprowadzenie bezpieczeństwa, są niezliczone - pierwszą, dość oczywistą, jest zabezpieczenie sieci hasłem. Każdy komputer w sieci posiadałby hash hasła, przed dołączeniem do sieci rodzic wymagałby od nowego dziecka podania hasła.
+\indent Jednakże, projektując aplikację zadbaliśmy o wprowadzenie metodyki Agile - "programowanie zwinne". Zakłada ona częste zmiany preferencji użytkowników, a co za tym idzie, wymaga łatwości w przeprowadzaniu modyfikacji kodu. Daje to możliwość dodania zabezpieczeń w wypadku dalszego rozwoju naszej aplikacji. \\
+\indent Możliwości, jeśli chodzi o wprowadzenie bezpieczeństwa, są niezliczone - pierwszą, dość oczywistą, jest zabezpieczenie sieci hasłem. Każdy komputer w sieci posiadałby hash hasła, przed dołączeniem do sieci rodzic wymagałby od nowego dziecka podania hasła.

@@ -8,7 +8,7 @@
 
 \subsection{Czego użytkownik powinien oczekiwać?}
 Prostej aplikacji, która pozwoli mu utworzyć własną sieć komputerową. Użytkownik powinien przygotować się na używanie linii komend.
-Aplikacja, zainstalowana na danym komputerze, przyłączy komputer do sieci.
+Aplikacja, zainstalowana na danym komputerze, przyłączy komputer do sieci lub też, jeśli taka jest wola użytkownika, utworzy całkowicie nową sieć.
 
 \subsection{Tworzenie wykresu}
 
@@ -18,6 +18,14 @@ Aplikacja, zainstalowana na danym komputerze, przyłączy komputer do sieci.
 \includegraphics[width=1.0\textwidth]{chart.jpg}
 
 \subsection{Jak uruchomić program?}
+Program został skonstruowany w taki sposób, aby nawet komputerowmu laikowi zapewnić łatwy dostęp do jego funkcjonalności. Aby uruchomić program należy uruchomić plik $main$ znajdujący się w katalogu $src$ z prawami administratora.\\
+\indent Po uruchomieniu program będzie wymagał od użytkownika wprowadzenia następujących danych:
+\begin{enumerate}
+\item Adres IP komputera na którym jest uruchomiony program.
+\item Liczba dozwolonych połączeń nawiązanych przez komputer na którym został uruchomiony program - dzięki temu komputery o lepszych zdolnościach obliczeniowych mogą być bardziej obciążane od słabszych komputerów.
+\item Czy jest to pierwszy komputer w sieci - odpowiedzią mogą być: yes/y/no/n, w przypadku odpowiedzi twierdzącej komputer tworzy nową sieć do której można podłączać inne maszyny.
+\item Jeśli odpowiedź na poprzednie pytanie była przecząca, program pyta o adres IP dowolnego komputera należącego do sieci docelowej - jest to potrzebne w celu umożliwienia jakiejkolwiek komunikacji komputera z siecią.
+\end{enumerate}
 
 \subsection{Podsumowanie}
 Jesteśmy pewni, iż dzięki powyższej instrukcji nawet Użytkownicy niezwiązani z branżą komputerową poradzą sobie z utworzeniem sieci komputerowej w swojej firmie!\\
