@@ -7,7 +7,7 @@ import (
 	"log"
 	"strconv"
 	"strings"
-	"./joinservice"
+	"github.com/pitex/sieci-projekt/src/joinservice"
 )
 
 //	Main function:
