@@ -194,7 +194,7 @@ func (s *Server) HandleNewMachine(socket net.Conn, msg string) {
 	}
 }
 
-//	Determines how to react for a SIM message depending on its type.
+//	Determines how to react for a SIP message depending on its type.
 func (s *Server) SIPMessageReaction(socket net.Conn, msg string) {
 	log.Print("Message type: %s\n", sip.ExtractType(msg))
 	switch sip.ExtractType(msg) {
