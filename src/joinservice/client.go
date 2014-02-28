@@ -3,8 +3,8 @@ package joinservice
 import (
 	"net"
 	"strings"
-	"../protocols/sip"
-	"../protocols"
+	"github.com/pitex/sieci-projekt/src//protocols/sip"
+	"github.com/pitex/sieci-projekt/src//protocols"
 	"log"
 )
 

@@ -3,11 +3,11 @@ package joinservice
 import (
 	"net"
 	"log"
-	"./tree"
+	"github.com/pitex/sieci-projekt/src/joinservice/tree"
 	"os"
-	"../protocols/sip"
+	"github.com/pitex/sieci-projekt/src/protocols/sip"
 	"strconv"
-	"../protocols/stp"
+	"github.com/pitex/sieci-projekt/src//protocols/stp"
 	"time"
 )
 

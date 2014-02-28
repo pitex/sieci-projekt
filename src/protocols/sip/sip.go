@@ -2,7 +2,7 @@ package sip
 
 import (
 	"fmt"
-	"../"
+	"github.com/pitex/sieci-projekt/src/protocols"
 	"net"
 	"strings"
 	"log"
