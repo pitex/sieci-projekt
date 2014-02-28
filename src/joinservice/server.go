@@ -7,7 +7,7 @@ import (
 	"os"
 	"github.com/pitex/sieci-projekt/src/protocols/sip"
 	"strconv"
-	"github.com/pitex/sieci-projekt/src//protocols/stp"
+	"github.com/pitex/sieci-projekt/src/protocols/stp"
 	"time"
 )
 
